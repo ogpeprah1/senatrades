@@ -135,7 +135,7 @@ export const tradeIdeas: TradeIdea[] = [
     width: 1080,
     height: 720,
     alt: "AUDJPY 30-minute chart with a short position marked from about 111.18 and a target near 109.67; price has dropped to around 110.09",
-    title: "AUDJPY - short from a double top",
+    title: "AUDJPY - short from trendline break",
     description:
       "Short position marked from around 111.18 with a target near 109.67. Price had dropped sharply to about 110.09 at the time of the screenshot.",
     date: "2026-03-01",
@@ -156,8 +156,8 @@ export const tradeIdeas: TradeIdea[] = [
   },
 ];
 
-/** How many ideas the homepage shows before linking to the full gallery. */
-export const TRADE_IDEAS_PREVIEW_COUNT = 6;
+/** How many ideas the homepage shows (Infinity = all of them). */
+export const TRADE_IDEAS_PREVIEW_COUNT = Infinity;
 
 export const tradeIdeasNote =
-  "Selected trade ideas shared with the SenaTrades community, shown as published. Not every idea reaches its target, losses are part of trading, and past examples do not guarantee future results.";
+  "Selected trade ideas were shared with the SenaTrades community. Not every idea reaches its target, losses are part of trading, and past examples do not guarantee future results.";

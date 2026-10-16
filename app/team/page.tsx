@@ -10,7 +10,7 @@ import { TeamCard } from "@/components/team/team-card";
 export const metadata = pageMetadata({
   title: "Meet the Team",
   description:
-    "The people behind SenaTrades - founder and CEO Kwashie Senanu Charles Prince, Nana Ama Akosah and Reynolds Dagbui.",
+    "The people behind SenaTrades - founder and CEO Kwashie Senanu Charles Prince, Nana Ama Akosah, Reynolds Dagbui and Nikoi Samuel Kotey.",
   path: "/team",
 });
 
@@ -48,9 +48,9 @@ export default function TeamPage() {
           <h2 id="team-members-title" className="sr-only">
             The SenaTrades team
           </h2>
-          <ul className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-x-8 gap-y-16 sm:grid-cols-2 xl:grid-cols-4">
             {allMembers.map((m, i) => (
-              <Reveal as="li" key={m.id} delay={(i % 3) * 0.08}>
+              <Reveal as="li" key={m.id} delay={(i % 4) * 0.08}>
                 <TeamCard member={m} expanded />
               </Reveal>
             ))}

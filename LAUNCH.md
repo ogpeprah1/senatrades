@@ -8,8 +8,7 @@ Items that must be resolved before the site goes public. Nothing in this list ha
 - [ ] **Full logo lockup**: a transparent export (ideally SVG) of the symbol plus the "Sena Trades" wordmark. The only supplied lockup is a 640px JPG on a light background, so the brand name next to the mark is currently typeset.
 - [x] **Reversed logo for dark backgrounds**: created at the brand owner's request from the official mark (black strokes → white, red untouched): `public/assets/brand/senatrades-mark-reversed.png`. Replace it with an official export if one exists.
 - [x] **CEO photographs**: two supplied photos are integrated. The colour portrait is used wherever the founder portrait appears; the black-and-white portrait is on `/founder`. Photographer watermarks are retained. Consider crediting the photographer.
-- [x] **Team**: Prince, Nana Ama Akosah and Reynolds Dagbui, shown on the homepage and `/team`.
-- [ ] **Reynolds Dagbui's photo**: currently an "RD" monogram placeholder. Add it to `public/assets/team/` and set `photo` in `content/team.ts`.
+- [x] **Team**: Prince, Nana Ama Akosah, Reynolds Dagbui and Nikoi Samuel Kotey, all with photos, shown on the homepage and `/team`.
 - [x] **Trade-idea screenshots**: nine charts are in the gallery (six on the homepage, all nine on `/education`). Status labels such as "Target reached" are used only where the screenshot visibly shows price trading through the marked target. Please confirm the descriptions.
 - [ ] **Testimonials**: confirm each person is happy to be quoted publicly under the name shown.
 - [ ] **Subscriber count**: `community.subscribers` in `content/site.ts` is shown as "1,100+" in the community stats only (not in the hero). Keep it as an honest floor and update it as the channel grows.

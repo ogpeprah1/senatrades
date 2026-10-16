@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import type { Testimonial } from "@/content/testimonials";
 import { cn } from "@/lib/utils";
 
@@ -48,14 +48,59 @@ function metrics(el: HTMLElement) {
   return { perView, stride };
 }
 
+const AUTOPLAY_MS = 6000;
+const REDUCED = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(cb: () => void) {
+  const mq = window.matchMedia(REDUCED);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
 /**
  * Scroll-snap carousel: two testimonials per view from `md`, one below.
  * Native scrolling keeps swipe/trackpad behaviour; buttons page by one view.
+ * Autoplays every 6s, looping, and pauses on hover, focus, touch, an open
+ * message, when off-screen, or via the pause button (WCAG 2.2.2).
  */
 export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
   const trackRef = useRef<HTMLUListElement>(null);
   const [page, setPage] = useState(0);
   const [pages, setPages] = useState(1);
+  // Autoplay: on by default, off for prefers-reduced-motion, user-toggleable.
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia(REDUCED).matches,
+    () => true, // server: assume no autoplay until hydrated
+  );
+  const [paused, setPaused] = useState(false);
+  const playing = !paused && !reducedMotion;
+  const [held, setHeld] = useState(false); // hover / focus / touch
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!playing || held || !inView) return;
+    const id = window.setInterval(() => {
+      const el = trackRef.current;
+      // Don't move while someone is reading an expanded message.
+      if (!el || el.querySelector("details[open]")) return;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      if (atEnd) el.scrollTo({ left: 0, behavior: "smooth" });
+      else {
+        const { perView, stride } = metrics(el);
+        el.scrollBy({ left: stride * perView, behavior: "smooth" });
+      }
+    }, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [playing, held, inView]);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -94,7 +139,19 @@ export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
     "inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-fg transition-colors hover:border-fg hover:bg-fg hover:text-surface disabled:pointer-events-none disabled:opacity-30";
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label="Testimonials">
+    <div
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Testimonials"
+      onMouseEnter={() => setHeld(true)}
+      onMouseLeave={() => setHeld(false)}
+      onFocus={() => setHeld(true)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) setHeld(false);
+      }}
+      onTouchStart={() => setHeld(true)}
+      onTouchEnd={() => window.setTimeout(() => setHeld(false), AUTOPLAY_MS)}
+    >
       <ul
         ref={trackRef}
         className="relative -mx-5 flex items-start snap-x snap-mandatory scroll-px-5 gap-5 overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
@@ -113,7 +170,7 @@ export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
 
       <div className="mt-8 flex items-center justify-between gap-6">
         <div className="flex flex-1 items-center gap-4">
-          <p className="eyebrow shrink-0 text-muted" aria-live="polite">
+          <p className="eyebrow shrink-0 text-muted" aria-live={playing ? "off" : "polite"}>
             {String(page + 1).padStart(2, "0")} / {String(pages).padStart(2, "0")}
           </p>
           <div aria-hidden className="h-px max-w-xs flex-1 bg-line">
@@ -124,6 +181,17 @@ export function TestimonialsCarousel({ items }: { items: Testimonial[] }) {
           </div>
         </div>
         <div className="flex gap-3">
+          {!reducedMotion && (
+          <button
+            type="button"
+            onClick={() => setPaused(playing)}
+            aria-pressed={!playing}
+            className={btn}
+          >
+            {playing ? <Pause aria-hidden className="size-4" /> : <Play aria-hidden className="size-4" />}
+            <span className="sr-only">{playing ? "Pause automatic scrolling" : "Resume automatic scrolling"}</span>
+          </button>
+          )}
           <button type="button" onClick={() => go(-1)} disabled={page === 0} className={btn}>
             <ChevronLeft aria-hidden className="size-5" />
             <span className="sr-only">Previous testimonials</span>

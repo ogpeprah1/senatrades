@@ -70,12 +70,34 @@ export const team: TeamMember[] = [
     id: "reynolds-dagbui",
     name: "Reynolds Dagbui",
     role: "Head of Education & Operations",
-    // Photo not yet supplied - renders a monogram placeholder.
-    photo: null,
+    photo: {
+      src: "/assets/team/reynolds-dagbui.jpg",
+      width: 813,
+      height: 1080,
+      alt: "Reynolds Dagbui seated in a red auditorium seat, hand on chin, looking down in thought",
+      focus: "40% 25%",
+    },
     bio: "Reynolds is an integral member of the Sena Trades management team, responsible for delivering quality trading education and supporting the organisation's daily operations.",
     longBio: [
       "He mentors students, facilitates training sessions, guides learners in developing their trading skills, and supports the implementation of educational programmes.",
       "He also assists in coordinating team activities, managing the Sena Trades community, monitoring student engagement, and ensuring the smooth execution of operational tasks. Through his combined roles in education and operations, he contributes to the development of traders and the continued growth of Sena Trades.",
+    ],
+  },
+  {
+    id: "nikoi-samuel-kotey",
+    name: "Nikoi Samuel Kotey",
+    role: "Deputy Director of Operations",
+    photo: {
+      src: "/assets/team/nikoi-samuel-kotey.jpg",
+      width: 1170,
+      height: 765,
+      alt: "Nikoi Samuel Kotey holding a microphone and writing currency pairs on a whiteboard during a session",
+      focus: "36% 30%",
+    },
+    bio: "Nikoi Samuel Kotey is a key member of the Sena Trades leadership team, working closely with the Founder to coordinate daily operations and drive the team's objectives.",
+    longBio: [
+      "His responsibilities include supervising team activities, coordinating projects and meetings, monitoring the execution of assigned tasks, supporting administrative and strategic decisions, and ensuring effective communication among team members.",
+      "He also assumes leadership in the Founder's absence, overseeing ongoing activities and ensuring continuity in the management and operations of Sena Trades.",
     ],
   },
 ];
@@ -84,4 +106,4 @@ export const team: TeamMember[] = [
 export const allMembers: TeamMember[] = [founderMember, ...team];
 
 /** Max profiles shown on the homepage before linking to /team. */
-export const TEAM_PREVIEW_COUNT = 3;
+export const TEAM_PREVIEW_COUNT = 4;

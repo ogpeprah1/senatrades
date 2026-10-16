@@ -22,9 +22,9 @@ export function TeamPreview() {
             Meet the full team
           </ButtonLink>
         </div>
-        <ul className="mt-16 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-16 grid gap-x-8 gap-y-16 sm:grid-cols-2 xl:grid-cols-4">
           {preview.map((m, i) => (
-            <Reveal as="li" key={m.id} delay={i * 0.08}>
+            <Reveal as="li" key={m.id} delay={(i % 4) * 0.08}>
               <TeamCard member={m} />
             </Reveal>
           ))}

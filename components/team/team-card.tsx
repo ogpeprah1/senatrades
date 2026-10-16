@@ -39,7 +39,7 @@ export function TeamCard({
       <div className="mt-6 flex items-start justify-between gap-4 border-t border-line pt-5">
         <div>
           <h3 className="font-display-tight text-display-sm text-fg lg:min-h-[2lh]">{member.name}</h3>
-          <p className="eyebrow mt-2 text-accent-text lg:min-h-[2lh]">{member.role}</p>
+          <p className="eyebrow mt-2 text-accent-text lg:min-h-[2lh] xl:min-h-[3lh]">{member.role}</p>
         </div>
         {member.links && member.links.length > 0 && (
           <ul className="flex gap-1">

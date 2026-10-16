@@ -1,26 +1,352 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ==========================================================================
+   SenaTrades design tokens
+   Palette derived from the brand reference values (logo pending): Sena Red,
+   Midnight Black, Charcoal, Soft White, Neutral Grey + accessible neutrals.
+   ========================================================================== */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Brand */
+  --color-sena-red: #cf1025;
+  --color-sena-red-deep: #a90c1d;
+  /* Lighter red tint for small text on dark surfaces (6:1 on midnight). */
+  --color-sena-red-bright: #ff4d5e;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Darks */
+  --color-midnight: #0b0b0d;
+  --color-ink: #121215;
+  --color-graphite: #1a1a1e;
+  --color-charcoal: #242428;
+  --color-smoke: #34343a;
+
+  /* Lights */
+  --color-soft-white: #f5f5f5;
+  --color-paper: #ececea;
+  --color-bone: #e2e2df;
+
+  /* Neutrals */
+  --color-grey: #a3a3a3;
+  --color-grey-400: #8b8b93;
+  --color-grey-600: #5a5a62;
+  --color-grey-700: #3d3d44;
+
+  /* Typography */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), var(--font-geist), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Fluid type scale */
+  --text-display-2xl: clamp(3.1rem, 1.6rem + 7.4vw, 9.75rem);
+  --text-display-2xl--line-height: 0.86;
+  --text-display-2xl--letter-spacing: -0.01em;
+  --text-display-xl: clamp(2.6rem, 1.5rem + 5.2vw, 7rem);
+  --text-display-xl--line-height: 0.9;
+  --text-display-lg: clamp(2.2rem, 1.4rem + 3.6vw, 5rem);
+  --text-display-lg--line-height: 0.94;
+  --text-display-md: clamp(1.85rem, 1.3rem + 2.3vw, 3.5rem);
+  --text-display-md--line-height: 0.98;
+  --text-display-sm: clamp(1.45rem, 1.15rem + 1.2vw, 2.25rem);
+  --text-display-sm--line-height: 1.05;
+  --text-lead: clamp(1.075rem, 1rem + 0.35vw, 1.3rem);
+  --text-lead--line-height: 1.6;
+  --text-quote: clamp(2rem, 1.2rem + 3.6vw, 4.6rem);
+  --text-quote--line-height: 1.04;
+
+  /* Radii */
+  --radius-card: 1.125rem;
+  --radius-panel: 1.75rem;
+  --radius-slab: clamp(1.75rem, 1rem + 3vw, 3rem);
+
+  /* Shadows */
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 24px 60px -24px rgb(0 0 0 / 0.55);
+  --shadow-paper: 0 1px 2px rgb(11 11 13 / 0.06),
+    0 18px 40px -22px rgb(11 11 13 / 0.25);
+  --shadow-red: 0 18px 40px -16px rgb(207 16 37 / 0.55);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
+
+  /* Breakpoints */
+  --breakpoint-xs: 25rem;
+
+  /* Layout */
+  --container-site: 82rem;
+  --container-prose: 40rem;
+
+  /* Animations */
+  --animate-rise: rise 900ms var(--ease-out-expo) both;
+  --animate-fade: fade 1200ms var(--ease-out-expo) both;
+  --animate-draw: draw 2.4s var(--ease-in-out-quart) both;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-scroll-cue: scroll-cue 2.2s var(--ease-in-out-quart) infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0.6em, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes draw {
+    from {
+      stroke-dashoffset: var(--path-length, 1);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.8);
+    }
+  }
+  @keyframes scroll-cue {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(220%);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Semantic, theme-aware tokens. Sections opt in with .theme-dark / .theme-light. */
+@theme inline {
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-accent-text: var(--accent-text);
+}
+
+:root,
+.theme-dark {
+  --fg: #f5f5f5;
+  --fg-soft: #d6d6d6;
+  --muted: #a3a3a3;
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.22);
+  --surface: #0b0b0d;
+  --surface-raised: #1a1a1e;
+  --accent-text: #ff4d5e;
+  --focus-ring: #ff4d5e;
+  color-scheme: dark;
+}
+
+.theme-light {
+  --fg: #0b0b0d;
+  --fg-soft: #2a2a2f;
+  --muted: #5a5a62;
+  --line: rgb(11 11 13 / 0.12);
+  --line-strong: rgb(11 11 13 / 0.28);
+  --surface: #f5f5f5;
+  --surface-raised: #ffffff;
+  --accent-text: #b80e21;
+  --focus-ring: #cf1025;
+  color-scheme: light;
+}
+
+.theme-dark,
+.theme-light {
+  color: var(--fg);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-midnight);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--color-sena-red);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  dialog {
+    color: inherit;
+  }
+
+  dialog::backdrop {
+    background: rgb(11 11 13 / 0.82);
+    backdrop-filter: blur(6px);
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 0.6rem + 3vw, 3rem);
+}
+
+@utility section-y {
+  padding-block: clamp(4.5rem, 2.5rem + 8vw, 9rem);
+}
+
+@utility section-y-sm {
+  padding-block: clamp(3.5rem, 2rem + 5vw, 6rem);
+}
+
+@utility font-display-wide {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+@utility font-display-tight {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility grid-lines {
+  background-image: linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility slab-top {
+  border-top-left-radius: var(--radius-slab);
+  border-top-right-radius: var(--radius-slab);
+}
+
+@utility slab-bottom {
+  border-bottom-left-radius: var(--radius-slab);
+  border-bottom-right-radius: var(--radius-slab);
+}
+
+@utility stroke-text {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px currentColor;
+}
+
+/* Grain overlay for dark cinematic sections (static, GPU-cheap). */
+@utility grain {
+  position: relative;
+  isolation: isolate;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+}
+
+/* Candles in the decorative backdrop grow up from their base, once. */
+.candle-in {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: candle-in 700ms var(--ease-out-expo) both;
+}
+
+@keyframes candle-in {
+  from {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Draw-on stroke animation: set --path-length (and pathLength attr) on the path. */
+.draw-path {
+  stroke-dasharray: var(--path-length, 1);
+  animation: var(--animate-draw);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

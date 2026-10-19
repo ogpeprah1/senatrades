@@ -91,6 +91,18 @@ export const testimonials: Testimonial[] = [
     ],
   },
   {
+    id: "akwasi",
+    name: "Akwasi",
+    excerpt:
+      "Indeed we had eyes but couldn't see until you showed us how to navigate the forex market.",
+    full: [
+      "Our Apostle, the good shepherd whose vision is to see every single one of us become profitable.",
+      "You've imparted so many lives with your knowledge in the forex market.",
+      "Indeed we had eyes but couldn't see until you showed us how to navigate the forex market. Words may fail me.",
+      "God bless you so much for all that you do for us.",
+    ],
+  },
+  {
     id: "nana-ama",
     name: "Nana Ama",
     teamMember: true,

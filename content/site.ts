@@ -62,7 +62,7 @@ export const site = {
 export const community = {
   name: "Sena Trades Effect",
   /** Shown as a rounded floor, e.g. 1100 → "1,100+". */
-  subscribers: 1100,
+  subscribers: 1080,
   asOf: "October 2026",
 } as const;
 
@@ -103,7 +103,8 @@ export const socials: SocialLink[] = [
     label: "Telegram",
     handle: "t.me/senatrades",
     href: links.telegramCommunity,
-    description: "Sena Trades Effect - our community, free calls and market analysis",
+    description:
+      "Sena Trades Effect - our community, free calls and market analysis",
   },
   {
     platform: "instagram",

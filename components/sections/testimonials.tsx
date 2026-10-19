@@ -22,8 +22,7 @@ export function Testimonials({ className }: { className?: string }) {
             }
           />
           <p className="text-lead text-muted lg:col-span-5">
-            Messages shared by members of the SenaTrades community, reproduced
-            as they were written.
+            Messages shared by mentees in the SenaTrades movement.
           </p>
         </div>
 
